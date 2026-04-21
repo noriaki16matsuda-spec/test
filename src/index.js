@@ -35,6 +35,7 @@ async function sendReply(message, text) {
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
+  console.log(`CLAUDE_CHANNEL_ID: ${process.env.CLAUDE_CHANNEL_ID}`);
 });
 
 client.on(Events.MessageCreate, async (message) => {
@@ -55,6 +56,7 @@ client.on(Events.MessageCreate, async (message) => {
   }
 
   // 指定チャンネルでは !claude なしで自動返答
+  console.log(`受信: channelId=${message.channelId}, 設定=${process.env.CLAUDE_CHANNEL_ID}`);
   if (message.channelId === process.env.CLAUDE_CHANNEL_ID) {
     await message.channel.sendTyping();
     const reply = await askClaude(message.content);
